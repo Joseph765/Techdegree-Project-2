@@ -22,8 +22,6 @@ function showPage(list, page) {
   }
 }
 
-
-
 function addSearchBar() {
   const parentDiv = document.querySelector('div.page-header');
   const div = document.createElement('div');
