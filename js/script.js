@@ -1,6 +1,7 @@
 const studentListItems = document.querySelectorAll('li.student-item'); //two global variables
 const pageNumberLimit = 10;
 const studentName = document.querySelectorAll('h3');
+const headDiv = document.querySelector('div.page-header.cf');
 
 // this function displays according to the list length on the page, and the page number
 
@@ -11,24 +12,17 @@ function hideAllStudents() {  //this function hides all students
 }
 
 function showPage(list, page) {
-  const startIndex = (page * list) - list;
-  const endIndex = page * list;
+  const startIndex = (page * pageNumberLimit) - pageNumberLimit;
+  const endIndex = page * pageNumberLimit;
   hideAllStudents();
   for(let i = startIndex; i < endIndex; i += 1) {
-    if (studentListItems[i]) {
-      studentListItems[i].style.display = 'block';
-    }
-  }
-}
-
-function showPageFilter(list) {
-  hideAllStudents();
-  for (let i = 0; i <= list.length; i += 1) {
     if (list[i]) {
       list[i].style.display = 'block';
     }
   }
 }
+
+
 
 function addSearchBar() {
   const parentDiv = document.querySelector('div.page-header');
@@ -50,7 +44,16 @@ function addSearchBar() {
         searchResults.push(studentListItems[i]);
       }
     }
-    showPageFilter(searchResults);
+    const h2 = document.createElement('h2');
+    const br = document.createElement('br');
+    const br2 = document.createElement('br');
+    if (searchResults.length === 0) {
+      headDiv.appendChild(br);
+      headDiv.appendChild(br2);
+      headDiv.appendChild(h2);
+      h2.textContent = 'No results were found';
+    }
+    showPage(searchResults, 1);
     const otherDiv = document.querySelector('div.pagination');
     const otherUl = document.querySelector('ul.pagination');
     otherDiv.removeChild(otherUl);
@@ -84,10 +87,10 @@ function appendPageLinks(list) {
         }
         const activeLink = e.target;
         activeLink.className = "active";
-        showPage(pageNumberLimit, parseInt(activeLink.textContent));
+        showPage(list, parseInt(activeLink.textContent));
     });
   }
 
 appendPageLinks(studentListItems);
-showPage(pageNumberLimit, 1); //calling the function to display the first page initially
+showPage(studentListItems, 1); //calling the function to display the first page initially
 addSearchBar();
