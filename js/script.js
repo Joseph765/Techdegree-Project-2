@@ -15,7 +15,18 @@ function showPage(list, page) {
   const endIndex = page * list;
   hideAllStudents();
   for(let i = startIndex; i < endIndex; i += 1) {
-    studentListItems[i].style.display = 'block';
+    if (studentListItems[i]) {
+      studentListItems[i].style.display = 'block';
+    }
+  }
+}
+
+function showPageFilter(list) {
+  hideAllStudents();
+  for (let i = 0; i <= list.length; i += 1) {
+    if (list[i]) {
+      list[i].style.display = 'block';
+    }
   }
 }
 
@@ -38,28 +49,32 @@ function addSearchBar() {
         studentName[i].style.display = 'block';
         searchResults.push(studentListItems[i]);
       }
-      showPage(pageNumberLimit, 1);
-      appendPageLinks(searchResults);
     }
+    showPageFilter(searchResults);
+    const otherDiv = document.querySelector('div.pagination');
+    const otherUl = document.querySelector('ul.pagination');
+    otherDiv.removeChild(otherUl);
+    appendPageLinks(searchResults);
   });
 }
 
 // this function appends the links to the DOM and adds functionality
 
 function appendPageLinks(list) {
-  const numberOfPages = (list.length / pageNumberLimit) + 1;
+  const numberOfPages = (list.length / pageNumberLimit);
   const parentDiv = document.querySelector('div.page');
   const div = document.createElement('div');
   div.className = "pagination";
   parentDiv.appendChild(div);
   const ul = document.createElement('ul');
   div.appendChild(ul);
-  for (let i = 1; i < numberOfPages; i += 1) {
+  ul.className = "pagination";
+  for (let i = 0; i < numberOfPages; i += 1) {
     const li = document.createElement('li');
     ul.appendChild(li);
     const a = document.createElement('a');
     li.appendChild(a);
-    a.textContent = i;
+    a.textContent = i + 1;
     a.href = "#";
   }
     ul.addEventListener('click', (e) => {
