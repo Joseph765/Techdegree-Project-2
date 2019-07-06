@@ -11,6 +11,12 @@ function hideAllStudents() {  //this function hides all students
   }
 }
 
+function createElement(elementName, attribute, value) {
+  const element = document.createElement(elementName);
+  element[attribute] = value;
+  return element;
+}
+
 function showPage(list, page) {
   const startIndex = (page * pageNumberLimit) - pageNumberLimit;
   const endIndex = page * pageNumberLimit;
@@ -22,18 +28,29 @@ function showPage(list, page) {
   }
 }
 
+
+//puts 'no results message on page but hides it immediately'
+  const h2 = document.createElement('h2');
+  headDiv.appendChild(h2);
+  h2.textContent = 'No results were found';
+  h2.style.display = 'none';
+//puts 'no results message on page but hides it immediately'
+
+
 function addSearchBar() {
   const parentDiv = document.querySelector('div.page-header');
-  const div = document.createElement('div');
+
+  const div = createElement('div', 'className', 'student-search');
   parentDiv.appendChild(div);
-  div.className = 'student-search';
-  const input = document.createElement('input');
+
+  const input = createElement('input', 'placeholder', 'Search for students...');
   div.appendChild(input);
-  input.placeholder = 'Search for students...';
-  const button = document.createElement('button');
+
+  const button = createElement('button', 'textContent', 'Search');
   div.appendChild(button);
-  button.textContent = 'Search';
+
   button.addEventListener('click', (e) => {
+    h2.style.display = 'none';
     hideAllStudents();
     let searchResults = [];
     for (let i = 0; i < studentListItems.length; i += 1) {
@@ -42,14 +59,8 @@ function addSearchBar() {
         searchResults.push(studentListItems[i]);
       }
     }
-    const h2 = document.createElement('h2');
-    const br = document.createElement('br');
-    const br2 = document.createElement('br');
     if (searchResults.length === 0) {
-      headDiv.appendChild(br);
-      headDiv.appendChild(br2);
-      headDiv.appendChild(h2);
-      h2.textContent = 'No results were found';
+      h2.style.display = 'block';
     }
     showPage(searchResults, 1);
     const otherDiv = document.querySelector('div.pagination');
@@ -64,12 +75,11 @@ function addSearchBar() {
 function appendPageLinks(list) {
   const numberOfPages = (list.length / pageNumberLimit);
   const parentDiv = document.querySelector('div.page');
-  const div = document.createElement('div');
-  div.className = "pagination";
+  const div  = createElement('div', 'className', 'pagination');
   parentDiv.appendChild(div);
-  const ul = document.createElement('ul');
+  const ul = createElement('ul', 'className', 'pagination');
   div.appendChild(ul);
-  ul.className = "pagination";
+
   for (let i = 0; i < numberOfPages; i += 1) {
     const li = document.createElement('li');
     ul.appendChild(li);
@@ -77,6 +87,9 @@ function appendPageLinks(list) {
     li.appendChild(a);
     a.textContent = i + 1;
     a.href = "#";
+    if (a.textContent === '1') {
+      a.className = 'active';
+    }
   }
     ul.addEventListener('click', (e) => {
         const a = ul.querySelectorAll('a');
