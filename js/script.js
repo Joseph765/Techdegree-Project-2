@@ -2,6 +2,7 @@ const studentListItems = document.querySelectorAll('li.student-item'); //two glo
 const pageNumberLimit = 10;
 const studentName = document.querySelectorAll('h3');
 const headDiv = document.querySelector('div.page-header.cf');
+const studentListUl = document.querySelector('ul.student-list');
 
 // this function displays according to the list length on the page, and the page number
 
@@ -31,7 +32,7 @@ function showPage(list, page) {
 
 //puts 'no results message on page but hides it immediately'
   const h2 = document.createElement('h2');
-  headDiv.appendChild(h2);
+  studentListUl.appendChild(h2);
   h2.textContent = 'No results were found';
   h2.style.display = 'none';
 //puts 'no results message on page but hides it immediately'
@@ -64,9 +65,8 @@ function addSearchBar() {
     }
     showPage(searchResults, 1);
     const otherDiv = document.querySelector('div.pagination');
-    const otherUl = document.querySelector('ul.pagination');
-    otherDiv.removeChild(otherUl);
     appendPageLinks(searchResults);
+    otherDiv.remove();
   });
 }
 
